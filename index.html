@@ -34,59 +34,5 @@ I agree to be contacted and that project information may be used for assessment 
 </form>
 </div>
 
-
-<script>
-(function(){
-const form = document.getElementById('projectForm');
-const submitBtn = document.getElementById('submitBtn');
-const msg = document.getElementById('formMessage');
-
-
-function showMessage(text, type){
-msg.textContent = text;
-msg.className = type === 'error' ? 'error' : 'success';
-}
-
-
-form.addEventListener('submit', function(e){
-e.preventDefault();
-// Basic client-side validation (HTML5 does most of it)
-if(!form.checkValidity()){
-showMessage('Please fill in required fields correctly.', 'error');
-// Let browser show built-in validation UI
-form.reportValidity();
-return;
-}
-
-
-submitBtn.disabled = true;
-showMessage('Sending…', '');
-
-
-// Example: submit using fetch to the provided action URL (expects JSON response)
-const url = form.action || window.location.href;
-const formData = new FormData(form);
-
-
-fetch(url, {
-method: form.method || 'POST',
-body: formData,
-}).then(async res => {
-submitBtn.disabled = false;
-if(!res.ok){
-const text = await res.text().catch(()=> 'Server error.');
-showMessage('Submission failed: ' + text, 'error');
-return;
-}
-showMessage('Thank you! Your project has been submitted.', 'success');
-form.reset();
-}).catch(err => {
-submitBtn.disabled = false;
-console.error(err);
-showMessage('Network error. Please try again later.', 'error');
-});
-});
-})();
-</script>
 </body>
 </html>
